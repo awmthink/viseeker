@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Utilities for extracting video keyframes.
 

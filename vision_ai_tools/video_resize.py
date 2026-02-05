@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Video resolution resizing utility.
 
@@ -327,4 +328,3 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

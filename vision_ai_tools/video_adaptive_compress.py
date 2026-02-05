@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Adaptive video compression to meet a target file size.
 
@@ -293,7 +294,9 @@ def adaptive_compress_video(
                 last_fps = f
                 if size <= target_bytes:
                     # Write final output.
-                    with outputs.PreparedOutput(output, default_filename=default_name, content_type="video/mp4") as out:
+                    with outputs.PreparedOutput(
+                        output, default_filename=default_name, content_type="video/mp4"
+                    ) as out:
                         os.replace(temp_out, out.local_path)
                     return {
                         "input_path": input_path,
@@ -330,7 +333,9 @@ def adaptive_compress_video(
                 )
                 last_height = h
                 if size <= target_bytes:
-                    with outputs.PreparedOutput(output, default_filename=default_name, content_type="video/mp4") as out:
+                    with outputs.PreparedOutput(
+                        output, default_filename=default_name, content_type="video/mp4"
+                    ) as out:
                         os.replace(temp_out, out.local_path)
                     return {
                         "input_path": input_path,
@@ -367,7 +372,11 @@ def adaptive_compress_video(
 
             codec_used, size = encode_with_codec_fallback(
                 fps_value=last_fps if last_fps is not None else float(min_fps),
-                height_value=last_height if last_height is not None else (int(min_height) if input_h and input_h > int(min_height) else None),
+                height_value=(
+                    last_height
+                    if last_height is not None
+                    else (int(min_height) if input_h and input_h > int(min_height) else None)
+                ),
                 crf_value=None,
                 v_bitrate=v_bitrate,
                 a_bitrate=audio_bitrate,
@@ -386,7 +395,9 @@ def adaptive_compress_video(
 
             # Always return the last attempt as output (even if it fails to hit target),
             # so callers can decide next steps.
-            with outputs.PreparedOutput(output, default_filename=default_name, content_type="video/mp4") as out:
+            with outputs.PreparedOutput(
+                output, default_filename=default_name, content_type="video/mp4"
+            ) as out:
                 os.replace(temp_out, out.local_path)
 
             return {
@@ -425,7 +436,9 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         choices=("auto", "libx265", "libx264"),
         help="Video codec (default: auto).",
     )
-    parser.add_argument("--crf", type=int, default=28, help="CRF for x264/x265 stages (default: 28).")
+    parser.add_argument(
+        "--crf", type=int, default=28, help="CRF for x264/x265 stages (default: 28)."
+    )
     parser.add_argument("--preset", default="medium", help="Encoder preset (default: medium).")
     parser.add_argument("--pix-fmt", default="yuv420p", help="Pixel format (default: yuv420p).")
     parser.add_argument("--audio-codec", default="aac", help="Audio codec (default: aac).")
@@ -474,4 +487,3 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -1,17 +1,17 @@
 # Tools
 
-本目录包含可复用的视频/媒体处理工具，支持本地文件、HTTP/HTTPS URL 与 S3 URL（`s3://bucket/key`）。
+This directory contains reusable video/media processing tools that support local files, HTTP/HTTPS URLs, and S3 URLs (`s3://bucket/key`).
 
 ---
 
 ## video_metadata
 
-提取视频元数据（时长、编码、分辨率、帧率等）。
+Extract video metadata (duration, codec, resolution, framerate, etc.).
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_metadata <input_path> [OPTIONS]
+ python -m vision_ai_tools.video_metadata <input_path> [OPTIONS]
 ```
 
 ```python
@@ -21,19 +21,19 @@ metadata = extract_video_metadata(input_path, **options)
 
 ### ARGUMENTS
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `input_path` | str | Yes | 视频路径：本地路径或 HTTP/HTTPS URL |
+| Name         | Type | Required | Description                              |
+| ------------ | ---- | -------- | ---------------------------------------- |
+| `input_path` | str  | Yes      | Video path: local path or HTTP/HTTPS URL |
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--probe-mode` | str | `url` | 远程文件处理模式：`download` (下载后探测) 或 `url` (直接探测URL) |
+| Name           | Type | Default | Description                                                                                |
+| -------------- | ---- | ------- | ------------------------------------------------------------------------------------------ |
+| `--probe-mode` | str  | `url`   | Remote file handling mode: `download` (probe after download) or `url` (probe URL directly) |
 
 ### OUTPUT
 
-JSON 对象，包含以下字段：
+JSON object with the following fields:
 
 ```json
 {
@@ -55,11 +55,11 @@ JSON 对象，包含以下字段：
 ### EXAMPLES
 
 ```bash
-# 本地文件
-uv run python -m vision_ai_tools.video_metadata ./video.mp4
+# Local file
+python -m vision_ai_tools.video_metadata ./video.mp4
 
 # HTTP URL
-uv run python -m vision_ai_tools.video_metadata "https://example.com/video.mp4"
+python -m vision_ai_tools.video_metadata "https://example.com/video.mp4"
 ```
 
 ### DEPENDENCIES
@@ -71,12 +71,12 @@ uv run python -m vision_ai_tools.video_metadata "https://example.com/video.mp4"
 
 ## video_keyframes
 
-从视频中提取关键帧图片，支持多种检测算法。
+Extract keyframe images from videos, supporting multiple detection algorithms.
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_keyframes <input_path> [OPTIONS]
+python -m vision_ai_tools.video_keyframes <input_path> [OPTIONS]
 ```
 
 ```python
@@ -86,27 +86,27 @@ results = extract_video_keyframes(input_path, **options)
 
 ### ARGUMENTS
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `input_path` | str | Yes | 视频路径：本地路径或 HTTP/HTTPS URL |
+| Name         | Type | Required | Description                              |
+| ------------ | ---- | -------- | ---------------------------------------- |
+| `input_path` | str  | Yes      | Video path: local path or HTTP/HTTPS URL |
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--method` | str | `I_frame` | 检测方法，逗号分隔可指定多个（按顺序尝试）。可选: `I_frame`, `difference`, `optical_flow`, `histogram` |
-| `--threshold` | float | (auto) | 分数阈值（仅非 I_frame 方法）。difference≈12, histogram≈0.35, optical_flow≈1.5 |
-| `--max-keyframes` | int | `20` | 最大关键帧数量 |
-| `--min-interval-s` | float | `0.5` | 关键帧间最小时间间隔（秒） |
-| `--output-dir` | str | None | 图片输出目录 |
-| `--image-format` | str | `jpg` | 输出图片格式：`jpg` 或 `png` |
-| `--manifest` | str | None | Manifest JSON 输出路径（本地路径） |
-| `--flow-step` | int | `2` | optical_flow 方法每 N 帧计算一次 |
-| `--no-cleanup` | flag | False | 保留临时文件 |
+| Name               | Type  | Default   | Description                                                                                                                    |
+| ------------------ | ----- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `--method`         | str   | `I_frame` | Detection method, comma-separated for multiple (tried in order). Options: `I_frame`, `difference`, `optical_flow`, `histogram` |
+| `--threshold`      | float | (auto)    | Score threshold (non-I_frame methods only). difference≈12, histogram≈0.35, optical_flow≈1.5                                    |
+| `--max-keyframes`  | int   | `20`      | Maximum number of keyframes                                                                                                    |
+| `--min-interval-s` | float | `0.5`     | Minimum time interval between keyframes (seconds)                                                                              |
+| `--output-dir`     | str   | None      | Image output directory                                                                                                         |
+| `--image-format`   | str   | `jpg`     | Output image format: `jpg` or `png`                                                                                            |
+| `--manifest`       | str   | None      | Manifest JSON output path (local path)                                                                                         |
+| `--flow-step`      | int   | `2`       | optical_flow method calculates every N frames                                                                                  |
+| `--no-cleanup`     | flag  | False     | Keep temporary files                                                                                                           |
 
 ### OUTPUT
 
-JSON 数组，每个元素为一个关键帧：
+JSON array, each element is a keyframe:
 
 ```json
 [
@@ -123,32 +123,32 @@ JSON 数组，每个元素为一个关键帧：
 ### EXAMPLES
 
 ```bash
-# 提取 I 帧到本地目录
-uv run python -m vision_ai_tools.video_keyframes ./video.mp4 --output-dir ./frames
+# Extract I-frames to local directory
+python -m vision_ai_tools.video_keyframes ./video.mp4 --output-dir ./frames
 
-# 使用 difference 方法，最多 10 帧
-uv run python -m vision_ai_tools.video_keyframes ./video.mp4 --method difference --max-keyframes 10 --output-dir ./frames
+# Use difference method, max 10 frames
+python -m vision_ai_tools.video_keyframes ./video.mp4 --method difference --max-keyframes 10 --output-dir ./frames
 
-# 多方法回退（先尝试 I_frame，失败则用 difference）
-uv run python -m vision_ai_tools.video_keyframes ./video.mp4 --method "I_frame,difference" --output-dir ./frames
+# Multiple methods fallback (try I_frame first, then difference if failed)
+python -m vision_ai_tools.video_keyframes ./video.mp4 --method "I_frame,difference" --output-dir ./frames
 ```
 
 ### DEPENDENCIES
 
 - ffprobe, ffmpeg (FFmpeg)
 - requests
-- opencv-python-headless, numpy (非 I_frame 方法)
+- opencv-python-headless, numpy (non-I_frame methods)
 
 ---
 
 ## video_resize
 
-按指定 `width/height` 调整视频分辨率，支持多种宽高比策略，默认保持音频流不变（copy）。
+Resize video to specified `width/height`, supporting multiple aspect ratio strategies. Audio stream is preserved by default (copy).
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_resize <input_path> --output <output> [OPTIONS]
+python -m vision_ai_tools.video_resize <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
@@ -158,30 +158,30 @@ result = resize_video(input_path, output="out.mp4", width=1280, height=720)
 
 ### ARGUMENTS
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `input_path` | str | Yes | 视频路径：本地/HTTP/HTTPS/S3 |
+| Name         | Type | Required | Description                     |
+| ------------ | ---- | -------- | ------------------------------- |
+| `input_path` | str  | Yes      | Video path: local/HTTP/HTTPS/S3 |
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--output` | str | Yes | 输出路径或 `s3://...` |
-| `--width` | int | None | 目标宽度（像素） |
-| `--height` | int | None | 目标高度（像素） |
-| `--aspect-policy` | str | `stretch` | 双维同时指定时的策略：`stretch`/`contain`/`cover`/`pad` |
-| `--pad-color` | str | `black` | contain/pad 补边颜色 |
-| `--video-codec` | str | `libx264` | 视频编码器（如 `libx265`/`libx264`） |
-| `--crf` | int | `23` | CRF（未设置 bitrate 时使用） |
-| `--bitrate` | str | None | 目标视频码率（如 `2000k`；设置后覆盖 CRF） |
-| `--preset` | str | `medium` | 编码 preset |
-| `--pix-fmt` | str | `yuv420p` | 像素格式 |
-| `--no-faststart` | flag | False | 禁用 MP4 faststart |
-| `--timeout-s` | int | `1800` | ffmpeg 超时秒数 |
+| Name              | Type | Default   | Description                                                                |
+| ----------------- | ---- | --------- | -------------------------------------------------------------------------- |
+| `--output`        | str  | Yes       | Output path or `s3://...`                                                  |
+| `--width`         | int  | None      | Target width (pixels)                                                      |
+| `--height`        | int  | None      | Target height (pixels)                                                     |
+| `--aspect-policy` | str  | `stretch` | Strategy when both dimensions specified: `stretch`/`contain`/`cover`/`pad` |
+| `--pad-color`     | str  | `black`   | Padding color for contain/pad                                              |
+| `--video-codec`   | str  | `libx264` | Video codec (e.g., `libx265`/`libx264`)                                    |
+| `--crf`           | int  | `23`      | CRF (used when bitrate not set)                                            |
+| `--bitrate`       | str  | None      | Target video bitrate (e.g., `2000k`; overrides CRF if set)                 |
+| `--preset`        | str  | `medium`  | Encoding preset                                                            |
+| `--pix-fmt`       | str  | `yuv420p` | Pixel format                                                               |
+| `--no-faststart`  | flag | False     | Disable MP4 faststart                                                      |
+| `--timeout-s`     | int  | `1800`    | ffmpeg timeout (seconds)                                                   |
 
 ### OUTPUT
 
-JSON 对象（示例字段）：
+JSON object (example fields):
 
 ```json
 {
@@ -200,29 +200,29 @@ JSON 对象（示例字段）：
 ### EXAMPLES
 
 ```bash
-# 严格输出 1280x720（允许拉伸）
-uv run python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --width 1280 --height 720 --aspect-policy stretch
+# Strict output 1280x720 (allow stretching)
+python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --width 1280 --height 720 --aspect-policy stretch
 
-# 只指定高度：等比缩放
-uv run python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --height 720
+# Only specify height: proportional scaling
+python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --height 720
 ```
 
 ### DEPENDENCIES
 
 - ffmpeg, ffprobe (FFmpeg)
 - requests
-- boto3 (S3 输入/输出时)
+- boto3 (for S3 input/output)
 
 ---
 
 ## video_remove_audio
 
-移除视频音轨（不重编码，保留原始视频编码与质量）。
+Remove audio track from video (no re-encoding, preserves original video codec and quality).
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_remove_audio <input_path> --output <output> [OPTIONS]
+python -m vision_ai_tools.video_remove_audio <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
@@ -232,10 +232,10 @@ result = remove_video_audio(input_path, output="noaudio.mp4")
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--output` | str | Yes | 输出路径或 `s3://...` |
-| `--timeout-s` | int | `600` | ffmpeg 超时秒数 |
+| Name          | Type | Default | Description               |
+| ------------- | ---- | ------- | ------------------------- |
+| `--output`    | str  | Yes     | Output path or `s3://...` |
+| `--timeout-s` | int  | `600`   | ffmpeg timeout (seconds)  |
 
 ### OUTPUT
 
@@ -251,18 +251,18 @@ result = remove_video_audio(input_path, output="noaudio.mp4")
 
 - ffmpeg, ffprobe (FFmpeg)
 - requests
-- boto3 (S3 输入/输出时)
+- boto3 (for S3 input/output)
 
 ---
 
 ## video_convert_mp4
 
-将多种视频格式转换为 MP4，默认优先使用 H.265（`libx265`），并自动选择第一个音轨。
+Convert various video formats to MP4. Defaults to H.265 (`libx265`) and automatically selects the first audio track.
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_convert_mp4 <input_path> --output <output> [OPTIONS]
+python -m vision_ai_tools.video_convert_mp4 <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
@@ -272,36 +272,36 @@ result = convert_to_mp4(input_path, output="out.mp4", video_codec="auto", max_he
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--output` | str | Yes | 输出路径或 `s3://...` |
-| `--video-codec` | str | `auto` | `auto`/`libx265`/`libx264` |
-| `--crf` | int | `28` | CRF（未设置 bitrate 时使用） |
-| `--bitrate` | str | None | 目标视频码率（如 `2500k`；设置后覆盖 CRF） |
-| `--preset` | str | `medium` | 编码 preset |
-| `--max-height` | int | None | 最大高度（仅降采样，不放大；等比缩放） |
-| `--audio-codec` | str | `aac` | 音频编码器 |
-| `--audio-bitrate` | str | `128k` | 音频码率 |
-| `--audio-sample-rate` | int | None | 采样率 |
-| `--audio-channels` | int | None | 声道数 |
-| `--timeout-s` | int | `3600` | ffmpeg 超时秒数 |
+| Name                  | Type | Default  | Description                                                 |
+| --------------------- | ---- | -------- | ----------------------------------------------------------- |
+| `--output`            | str  | Yes      | Output path or `s3://...`                                   |
+| `--video-codec`       | str  | `auto`   | `auto`/`libx265`/`libx264`                                  |
+| `--crf`               | int  | `28`     | CRF (used when bitrate not set)                             |
+| `--bitrate`           | str  | None     | Target video bitrate (e.g., `2500k`; overrides CRF if set)  |
+| `--preset`            | str  | `medium` | Encoding preset                                             |
+| `--max-height`        | int  | None     | Maximum height (downscale only, no upscaling; proportional) |
+| `--audio-codec`       | str  | `aac`    | Audio codec                                                 |
+| `--audio-bitrate`     | str  | `128k`   | Audio bitrate                                               |
+| `--audio-sample-rate` | int  | None     | Sample rate                                                 |
+| `--audio-channels`    | int  | None     | Number of channels                                          |
+| `--timeout-s`         | int  | `3600`   | ffmpeg timeout (seconds)                                    |
 
 ### DEPENDENCIES
 
 - ffmpeg, ffprobe (FFmpeg)
 - requests
-- boto3 (S3 输入/输出时)
+- boto3 (for S3 input/output)
 
 ---
 
 ## video_adaptive_compress
 
-根据目标文件大小自适应压缩视频（策略顺序：fps → 分辨率 → 码率控制）。
+Adaptively compress video to target file size (strategy order: fps → resolution → bitrate control).
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_adaptive_compress <input_path> --output <output> (--target-bytes N | --target-mb M) [OPTIONS]
+python -m vision_ai_tools.video_adaptive_compress <input_path> --output <output> (--target-bytes N | --target-mb M) [OPTIONS]
 ```
 
 ```python
@@ -311,38 +311,38 @@ result = adaptive_compress_video(input_path, output="out.mp4", target_mb=8)
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--output` | str | Yes | 输出路径或 `s3://...` |
-| `--target-bytes` | int | - | 目标字节数 |
-| `--target-mb` | float | - | 目标大小（MiB） |
-| `--video-codec` | str | `auto` | `auto`/`libx265`/`libx264` |
-| `--crf` | int | `28` | 前两级策略使用的 CRF |
-| `--audio-bitrate` | str | `128k` | 音频码率 |
-| `--min-fps` | float | `8` | 最低 fps |
-| `--min-height` | int | `480` | 最低高度 |
-| `--timeout-s` | int | `7200` | 每次尝试的超时秒数 |
+| Name              | Type  | Default | Description                           |
+| ----------------- | ----- | ------- | ------------------------------------- |
+| `--output`        | str   | Yes     | Output path or `s3://...`             |
+| `--target-bytes`  | int   | -       | Target bytes                          |
+| `--target-mb`     | float | -       | Target size (MiB)                     |
+| `--video-codec`   | str   | `auto`  | `auto`/`libx265`/`libx264`            |
+| `--crf`           | int   | `28`    | CRF used by first two strategy levels |
+| `--audio-bitrate` | str   | `128k`  | Audio bitrate                         |
+| `--min-fps`       | float | `8`     | Minimum fps                           |
+| `--min-height`    | int   | `480`   | Minimum height                        |
+| `--timeout-s`     | int   | `7200`  | Timeout per attempt (seconds)         |
 
 ### OUTPUT
 
-返回对象包含 `success`、`actual_bytes` 与 `attempts`（每次尝试的参数与产物大小）。
+Returns object containing `success`, `actual_bytes`, and `attempts` (parameters and output size for each attempt).
 
 ### DEPENDENCIES
 
 - ffmpeg, ffprobe (FFmpeg)
 - requests
-- boto3 (S3 输入/输出时)
+- boto3 (for S3 input/output)
 
 ---
 
 ## video_split
 
-将视频切分为多个片段：支持基于 I 帧切分（`iframe`）或按固定秒长切分（`fixed`）。
+Split video into multiple segments: supports I-frame based splitting (`iframe`) or fixed duration splitting (`fixed`).
 
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_split <input_path> --mode (iframe|fixed) [OPTIONS]
+python -m vision_ai_tools.video_split <input_path> --mode (iframe|fixed) [OPTIONS]
 ```
 
 ```python
@@ -352,25 +352,80 @@ result = split_video(input_path, mode="fixed", output_dir="./segs", segment_s=10
 
 ### OPTIONS
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `--mode` | str | Yes | `iframe` 或 `fixed` |
-| `--output-dir` | str | None | 片段输出目录（若不提供则需 `--s3-output-prefix`） |
-| `--s3-output-prefix` | str | None | 上传片段到 `s3://bucket/prefix/` |
-| `--manifest` | str | None | manifest JSON（本地或 S3） |
-| `--segment-s` | float | None | 固定秒长（fixed 模式必填） |
-| `--every-n-iframes` | int | `1` | I 帧切分粒度（iframe 模式） |
-| `--max-segments` | int | None | 限制输出片段数量（iframe 模式） |
-| `--prefix` | str | `segment_` | 文件名前缀 |
-| `--ext` | str | None | 输出容器扩展名（默认同输入） |
-| `--timeout-s` | int | `3600` | ffmpeg 超时秒数 |
+| Name                 | Type  | Default    | Description                                                              |
+| -------------------- | ----- | ---------- | ------------------------------------------------------------------------ |
+| `--mode`             | str   | Yes        | `iframe` or `fixed`                                                      |
+| `--output-dir`       | str   | None       | Segment output directory (required if `--s3-output-prefix` not provided) |
+| `--s3-output-prefix` | str   | None       | Upload segments to `s3://bucket/prefix/`                                 |
+| `--manifest`         | str   | None       | Manifest JSON (local or S3)                                              |
+| `--segment-s`        | float | None       | Fixed duration (required for fixed mode)                                 |
+| `--every-n-iframes`  | int   | `1`        | I-frame splitting granularity (iframe mode)                              |
+| `--max-segments`     | int   | None       | Limit number of output segments (iframe mode)                            |
+| `--prefix`           | str   | `segment_` | Filename prefix                                                          |
+| `--ext`              | str   | None       | Output container extension (defaults to input extension)                 |
+| `--timeout-s`        | int   | `3600`     | ffmpeg timeout (seconds)                                                 |
 
 ### NOTES / PITFALLS
 
-- 默认使用 `-c copy` 不重编码，切分点可能会对齐到关键帧附近（尤其是 fixed 模式）。
+- Default uses `-c copy` (no re-encoding), split points may align near keyframes (especially in fixed mode).
 
 ### DEPENDENCIES
 
 - ffmpeg, ffprobe (FFmpeg)
 - requests
-- boto3 (S3 输入/输出时)
+- boto3 (for S3 input/output)
+
+---
+
+## image_describe
+
+Describe an image using a generic multimodal VLM via an OpenAI-compatible client.
+
+### SYNOPSIS
+
+```bash
+uv run python -m vision_ai_tools.image_describe <input_path> [OPTIONS]
+```
+
+```python
+from vision_ai_tools.image_describe import describe_image
+result = describe_image(input_path, prompt="Describe this image in detail.")
+```
+
+### ARGUMENTS
+
+| Name         | Type | Required | Description                     |
+| ------------ | ---- | -------- | ------------------------------- |
+| `input_path` | str  | Yes      | Image path: local/HTTP/HTTPS/S3 |
+
+### OPTIONS
+
+| Name       | Type | Default                   | Description                                                                 |
+| ---------- | ---- | ------------------------- | --------------------------------------------------------------------------- |
+| `--prompt` | str  | (built-in default prompt) | Custom prompt to guide description. When omitted, use built-in generic one. |
+
+### OUTPUT
+
+The tool returns a single string value (JSON string) containing the natural language description of the image.
+
+### EXAMPLES
+
+```bash
+# Basic usage with built-in prompt
+uv run python -m vision_ai_tools.image_describe ./image.png
+
+# With custom Chinese prompt
+uv run python -m vision_ai_tools.image_describe ./image.png \
+  --prompt "请用中文详细描述图片中的场景、人物和文字内容"
+```
+
+### DEPENDENCIES
+
+- openai (for the OpenAI-compatible client)
+- requests (via PreparedInput for HTTP/S3 handling)
+
+### ENVIRONMENT VARIABLES
+
+- `VLM_API_KEY`: VLM 多模态接口 API Key（必需）。
+- `VLM_BASE_URL`: VLM 接口 Base URL（必需）。
+- `VLM_MODEL_ID`: 模型 ID（必需）。

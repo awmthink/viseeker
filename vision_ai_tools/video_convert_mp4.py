@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Convert various video formats to MP4.
 
@@ -268,4 +269,3 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

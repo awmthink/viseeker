@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Remove audio tracks from a video without re-encoding.
 
@@ -50,9 +51,7 @@ def remove_video_audio(
     with inputs.PreparedInput(input_path, mode="download") as local_in:
         p = probe.probe_video(local_in)
         raw = probe.run_ffprobe_json(local_in, timeout_s=60)
-        audio_streams = [
-            s for s in (raw.get("streams") or []) if (s.get("codec_type") == "audio")
-        ]
+        audio_streams = [s for s in (raw.get("streams") or []) if (s.get("codec_type") == "audio")]
 
         with outputs.PreparedOutput(
             output,
@@ -130,4 +129,3 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

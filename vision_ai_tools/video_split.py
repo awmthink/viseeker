@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Split a video into segments.
 
@@ -215,9 +216,7 @@ def split_video(
             else:
                 ts = _probe_iframe_timestamps(local_in)
                 # Use every N-th I-frame, skipping t=0 boundary.
-                split_points = [
-                    t for i, t in enumerate(ts) if i % every_n_iframes == 0 and t > 0
-                ]
+                split_points = [t for i, t in enumerate(ts) if i % every_n_iframes == 0 and t > 0]
                 if max_segments is not None and len(split_points) + 1 > max_segments:
                     # Downsample split points uniformly by index.
                     keep = max_segments - 1
@@ -382,4 +381,3 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
