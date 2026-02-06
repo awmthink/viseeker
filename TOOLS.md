@@ -429,3 +429,82 @@ uv run python -m vision_ai_tools.image_describe ./image.png \
 - `VLM_API_KEY`: VLM 多模态接口 API Key（必需）。
 - `VLM_BASE_URL`: VLM 接口 Base URL（必需）。
 - `VLM_MODEL_ID`: 模型 ID（必需）。
+
+---
+
+## video_describe
+
+Understand a video by sampling frames and calling a multimodal VLM (multi-frame).
+
+### SYNOPSIS
+
+```bash
+uv run python -m vision_ai_tools.video_describe <input_path> [OPTIONS]
+```
+
+```python
+from vision_ai_tools.video_describe import describe_video
+result = describe_video(input_path, prompt="你觉得这个恐怖吗？", detail="low")
+```
+
+### ARGUMENTS
+
+| Name         | Type | Required | Description                     |
+| ------------ | ---- | -------- | ------------------------------- |
+| `input_path` | str  | Yes      | Video path: local/HTTP/HTTPS/S3 |
+
+### OPTIONS
+
+| Name              | Type  | Default | Description                                       |
+| ----------------- | ----- | ------- | ------------------------------------------------- |
+| `--prompt`        | str   | None    | User prompt/question (default: built-in generic)  |
+| `--detail`        | str   | `low`   | Frame detail for VLM: `low` or `high`             |
+| `--fps`           | float | `1.0`   | Sampling FPS for short videos                     |
+| `--max-frames`    | int   | `128`   | Maximum frames to send                            |
+
+### OUTPUT
+
+JSON object:
+
+```json
+{
+  "text": "......",
+  "detail": "low",
+  "duration_s": 12.34,
+  "frame_count": 13
+}
+```
+
+### EXAMPLES
+
+```bash
+# Basic usage (1 fps, max 128 frames), note: duration must be < 300s
+uv run python -m vision_ai_tools.video_describe ./video.mp4 \
+  --prompt "你觉得这个恐怖吗？" \
+  --detail low
+
+# Use high detail
+uv run python -m vision_ai_tools.video_describe "s3://bucket/video.mp4" \
+  --prompt "总结这个视频发生了什么" \
+  --detail high
+```
+
+### NOTES / PITFALLS
+
+- Input video duration must be **< 5 minutes (300 seconds)**. Longer videos are rejected.
+- Frames are decoded by OpenCV (streaming). For HTTP/HTTPS inputs and S3 inputs (via presigned HTTPS URLs), the full video is not downloaded.
+- Sampled frames are written as local JPEGs and passed to the model via Responses API `input_image` with `file://...` URLs (SDK uploads files via Files API), which avoids large base64 payloads.
+
+### DEPENDENCIES
+
+- ffprobe (FFmpeg)
+- requests (via PreparedInput for HTTP/S3 handling)
+- opencv-python-headless, numpy (for streaming frame decoding)
+- boto3 (for S3 presigned URL generation)
+- volcengine-python-sdk[ark] (volcenginesdkarkruntime, for Responses API + Files upload)
+
+### ENVIRONMENT VARIABLES
+
+- `VLM_API_KEY`: VLM 多模态接口 API Key（必需）。
+- `VLM_BASE_URL`: VLM 接口 Base URL（必需）。
+- `VLM_MODEL_ID`: 模型 ID（必需）。
