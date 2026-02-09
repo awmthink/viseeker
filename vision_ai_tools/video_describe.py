@@ -44,9 +44,12 @@ load_dotenv()
 
 DEFAULT_PROMPT = (
     "You are an expert video captioning assistant. "
-    "You will be given a sequence of video frames with timestamps sampled from a full video. "
-    "Write a caption for the entire video: summarize the scene, main subjects, actions, and key events "
-    "in a clear, coherent way. Use timestamps only when helpful. Avoid speculation beyond what is visible."
+    "You will be given a sequence of video frames with timestamps "
+    "sampled from a full video. "
+    "Write a caption for the entire video: summarize the scene, main "
+    "subjects, actions, and key events in a clear, coherent way. "
+    "Use timestamps only when helpful. Avoid speculation beyond what "
+    "is visible."
 )
 
 MAX_VIDEO_DURATION_S = 300.0
@@ -191,7 +194,8 @@ def _stream_sample_frames_opencv(
                 frame_idx += 1
             return picked[:max_frames]
 
-        # Frame count unknown (common for some HTTP streams): stream and pick when crossing target times.
+        # Frame count unknown (common for some HTTP streams): stream and
+        # pick when crossing target times.
         targets = _compute_timestamps(duration_s, fps=fps, max_frames=max_frames)
         picked2: list[tuple[float, bytes]] = []
         j = 0
@@ -346,7 +350,8 @@ def describe_video(
 
         if duration_s >= MAX_VIDEO_DURATION_S:
             raise ValueError(
-                f"Video is too long: duration {duration_s:.3f}s, limit is < {MAX_VIDEO_DURATION_S:.3f}s"
+                f"Video is too long: duration {duration_s:.3f}s, "
+                f"limit is < {MAX_VIDEO_DURATION_S:.3f}s"
             )
 
         with tempfile.TemporaryDirectory() as temp_dir:

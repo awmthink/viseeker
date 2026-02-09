@@ -80,4 +80,3 @@ class PreparedOutput:
                 os.rmdir(self._temp_dir)
             except OSError:
                 pass
-

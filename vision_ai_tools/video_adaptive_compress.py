@@ -196,7 +196,8 @@ def adaptive_compress_video(
         if float(min_fps) < input_fps and float(min_fps) not in fps_candidates:
             fps_candidates.append(float(min_fps))
 
-        # Stage 2: resolution candidates (only downscale; keep -> 2160 -> 1440 -> 1080 -> 720 -> 480).
+        # Stage 2: resolution candidates (only downscale; keep then
+        # 2160 -> 1440 -> 1080 -> 720 -> 480).
         height_candidates: List[Optional[int]] = [None]
         for h in [2160, 1440, 1080, 720, int(min_height)]:
             if input_h and h < input_h and h >= int(min_height) and h not in height_candidates:

@@ -1,13 +1,12 @@
 import json
 import os
-from typing import Any, Dict
-
-import pytest
 
 from tests.conftest import DummyCompletedProcess, assert_json_stdout
 
 
-def test_video_metadata_extract_video_metadata(monkeypatch, mock_ffmpeg_ok, patch_prepared_input, fake_subprocess_run):
+def test_video_metadata_extract_video_metadata(
+    monkeypatch, mock_ffmpeg_ok, patch_prepared_input, fake_subprocess_run
+):
     from vision_ai_tools import video_metadata
 
     patch_prepared_input(lambda input_path, mode: "spec://input")
@@ -15,7 +14,13 @@ def test_video_metadata_extract_video_metadata(monkeypatch, mock_ffmpeg_ok, patc
     ffprobe_json = {
         "format": {"duration": "2.5", "format_name": "mp4", "bit_rate": "1000"},
         "streams": [
-            {"codec_type": "video", "codec_name": "h264", "width": 1280, "height": 720, "r_frame_rate": "25/1"},
+            {
+                "codec_type": "video",
+                "codec_name": "h264",
+                "width": 1280,
+                "height": 720,
+                "r_frame_rate": "25/1",
+            },
             {"codec_type": "audio", "codec_name": "aac", "sample_rate": "44100", "channels": 2},
         ],
     }
@@ -53,7 +58,6 @@ def test_video_convert_mp4_auto_codec_fallback(
     patch_prepared_output,
 ):
     from vision_ai_tools import video_convert_mp4
-    from vision_ai_tools._internal.probe import ProbeResult
 
     in_file = tmp_path / "in.mov"
     in_file.write_bytes(b"x")
@@ -77,7 +81,9 @@ def test_video_convert_mp4_auto_codec_fallback(
 
     monkeypatch.setattr(video_convert_mp4, "_run_ffmpeg", _fake_run_ffmpeg)
 
-    result = video_convert_mp4.convert_to_mp4(str(in_file), output=str(out_file), video_codec="auto")
+    result = video_convert_mp4.convert_to_mp4(
+        str(in_file), output=str(out_file), video_codec="auto"
+    )
     assert result["video_codec"] == "libx264"
     assert os.path.exists(str(out_file))
     assert calls["n"] == 2
@@ -99,7 +105,11 @@ def test_video_resize_keep_aspect_when_one_dimension(
 
     patch_prepared_input(lambda input_path, mode: str(in_file))
     patch_prepared_output(str(out_file), s3_url=None)
-    monkeypatch.setattr(video_resize.probe, "probe_video", lambda p: dummy_probe_result(video_width=1920, video_height=1080))
+    monkeypatch.setattr(
+        video_resize.probe,
+        "probe_video",
+        lambda p: dummy_probe_result(video_width=1920, video_height=1080),
+    )
 
     def _fake_run(cmd, capture_output, text, check, timeout):
         # last arg is output path
@@ -132,11 +142,15 @@ def test_video_remove_audio_counts_streams_removed(
 
     patch_prepared_input(lambda input_path, mode: str(in_file))
     patch_prepared_output(str(out_file), s3_url=None)
-    monkeypatch.setattr(video_remove_audio.probe, "probe_video", lambda p: dummy_probe_result(has_audio=True))
+    monkeypatch.setattr(
+        video_remove_audio.probe, "probe_video", lambda p: dummy_probe_result(has_audio=True)
+    )
     monkeypatch.setattr(
         video_remove_audio.probe,
         "run_ffprobe_json",
-        lambda p, timeout_s=60: {"streams": [{"codec_type": "audio"}, {"codec_type": "audio"}, {"codec_type": "video"}]},
+        lambda p, timeout_s=60: {
+            "streams": [{"codec_type": "audio"}, {"codec_type": "audio"}, {"codec_type": "video"}]
+        },
     )
 
     def _fake_run(cmd, capture_output, text, check, timeout):
@@ -150,4 +164,3 @@ def test_video_remove_audio_counts_streams_removed(
     assert r["has_audio_before"] is True
     assert r["audio_streams_removed"] == 2
     assert os.path.exists(str(out_file))
-

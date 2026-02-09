@@ -1,8 +1,7 @@
-import contextlib
 import json
 import os
 from dataclasses import dataclass
-from typing import Any, Callable, Iterator, Optional
+from typing import Any, Callable, Optional
 
 import pytest
 
@@ -79,7 +78,9 @@ def patch_prepared_input(monkeypatch: pytest.MonkeyPatch):
         from vision_ai_tools._internal import inputs
 
         class _FakePreparedInput:
-            def __init__(self, input_path: str, mode: str = "download", presign_expires_in: int = 3600):
+            def __init__(
+                self, input_path: str, mode: str = "download", presign_expires_in: int = 3600
+            ):
                 self.input_path = input_path
                 self.mode = mode
                 self.presign_expires_in = presign_expires_in
@@ -110,7 +111,13 @@ def patch_prepared_output(monkeypatch: pytest.MonkeyPatch):
             s3_url: Optional[str]
 
         class _FakePreparedOutput:
-            def __init__(self, output: str, *, default_filename: str = "output.bin", content_type: Optional[str] = None):
+            def __init__(
+                self,
+                output: str,
+                *,
+                default_filename: str = "output.bin",
+                content_type: Optional[str] = None,
+            ):
                 self.output = output
                 self.default_filename = default_filename
                 self.content_type = content_type
@@ -157,4 +164,3 @@ def assert_json_stdout(capsys: pytest.CaptureFixture[str]) -> Any:
     out = capsys.readouterr().out.strip()
     assert out, "expected stdout to contain JSON"
     return json.loads(out)
-

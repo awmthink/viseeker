@@ -87,9 +87,7 @@ def probe_video(input_spec: str, *, timeout_s: int = 60) -> ProbeResult:
     format_info: Dict[str, Any] = data.get("format", {}) or {}
     streams = data.get("streams", []) or []
 
-    duration_s = (
-        float(format_info.get("duration", 0)) if format_info.get("duration") else 0.0
-    )
+    duration_s = float(format_info.get("duration", 0)) if format_info.get("duration") else 0.0
     format_name = str(format_info.get("format_name", "") or "")
     bit_rate = int(format_info.get("bit_rate", 0) or 0)
 
@@ -135,4 +133,3 @@ def probe_video(input_spec: str, *, timeout_s: int = 60) -> ProbeResult:
         video_fps=video_fps,
         audio_codec=audio_codec,
     )
-

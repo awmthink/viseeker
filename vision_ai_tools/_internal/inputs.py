@@ -79,7 +79,9 @@ class PreparedInput:
 
         if self.mode == "url":
             if is_s3_url(self.input_path):
-                return s3.presign_get_object_url(self.input_path, expires_in=self.presign_expires_in)
+                return s3.presign_get_object_url(
+                    self.input_path, expires_in=self.presign_expires_in
+                )
             if is_http_url(self.input_path):
                 return self.input_path
             raise ValueError(f"Unsupported input path: {self.input_path}")
@@ -113,4 +115,3 @@ class PreparedInput:
                 os.rmdir(self._temp_dir)
             except OSError:
                 pass
-

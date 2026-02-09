@@ -20,7 +20,7 @@ import os
 import subprocess
 import sys
 import tempfile
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 from ._internal import ffmpeg, inputs, probe, s3
 
@@ -245,7 +245,8 @@ def split_video(
                 seg_probe = probe.probe_video(seg_path)
                 dur = float(seg_probe.duration_s or 0.0)
                 if split_times is not None and idx < len(split_times):
-                    # For iframe mode, boundaries come from split_times; still prefer probed duration.
+                    # For iframe mode, boundaries come from split_times;
+                    # still prefer probed duration.
                     pass
                 seg = {
                     "index": idx,

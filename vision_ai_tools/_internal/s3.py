@@ -240,4 +240,3 @@ def join_s3_url(prefix_url: str, key: str) -> str:
     key = key.lstrip("/")
     joined = "/".join([p for p in [prefix_key, key] if p])
     return f"s3://{bucket}/{joined}"
-

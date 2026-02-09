@@ -105,7 +105,9 @@ def test_outputs_prepared_output_s3_upload_on_success(monkeypatch):
 
     monkeypatch.setattr(outputs.s3, "upload_path_to_s3", _upload)
 
-    po = outputs.PreparedOutput("s3://bucket/out.bin", default_filename="out.bin", content_type="application/octet-stream")
+    po = outputs.PreparedOutput(
+        "s3://bucket/out.bin", default_filename="out.bin", content_type="application/octet-stream"
+    )
     with po as out:
         assert out.s3_url == "s3://bucket/out.bin"
         with open(out.local_path, "wb") as f:
@@ -145,7 +147,13 @@ def test_probe_parse_fps_and_probe_video(monkeypatch, mock_ffmpeg_ok):
     raw = {
         "format": {"duration": "1.5", "format_name": "mp4", "bit_rate": "123"},
         "streams": [
-            {"codec_type": "video", "codec_name": "h264", "width": 640, "height": 360, "r_frame_rate": "30/1"},
+            {
+                "codec_type": "video",
+                "codec_name": "h264",
+                "width": 640,
+                "height": 360,
+                "r_frame_rate": "30/1",
+            },
             {"codec_type": "audio", "codec_name": "aac"},
         ],
     }
@@ -158,4 +166,3 @@ def test_probe_parse_fps_and_probe_video(monkeypatch, mock_ffmpeg_ok):
     assert p.video_width == 640
     assert p.video_height == 360
     assert abs((p.video_fps or 0) - 30.0) < 1e-6
-

@@ -1,11 +1,8 @@
 import json
 import os
-from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
-import pytest
-
-from tests.conftest import DummyCompletedProcess, assert_json_stdout
+from tests.conftest import assert_json_stdout
 
 
 def test_video_split_fixed_mode_produces_segments(
@@ -24,7 +21,9 @@ def test_video_split_fixed_mode_produces_segments(
     patch_prepared_input(lambda input_path, mode: str(in_file))
 
     # Probe on input + per-segment probes
-    monkeypatch.setattr(video_split.probe, "probe_video", lambda p: dummy_probe_result(duration_s=1.0))
+    monkeypatch.setattr(
+        video_split.probe, "probe_video", lambda p: dummy_probe_result(duration_s=1.0)
+    )
 
     def _fake_run_ffmpeg(cmd: list[str], *, timeout_s: int) -> None:
         # The segment pattern is the last cmd element before "-y"? In code it's after "-y".
@@ -65,7 +64,9 @@ def test_video_split_s3_upload_prefix_sets_segment_urls(
     out_dir = tmp_path / "segs"
 
     patch_prepared_input(lambda input_path, mode: str(in_file))
-    monkeypatch.setattr(video_split.probe, "probe_video", lambda p: dummy_probe_result(duration_s=1.0))
+    monkeypatch.setattr(
+        video_split.probe, "probe_video", lambda p: dummy_probe_result(duration_s=1.0)
+    )
 
     def _fake_run_ffmpeg(cmd: list[str], *, timeout_s: int) -> None:
         pattern = cmd[-1]
@@ -99,7 +100,9 @@ def test_video_split_main_prints_json(capsys, monkeypatch, mock_ffmpeg_ok):
     from vision_ai_tools import video_split
 
     monkeypatch.setattr(video_split, "split_video", lambda *a, **k: {"ok": True})
-    code = video_split.main(["./in.mp4", "--mode", "fixed", "--output-dir", "./out", "--segment-s", "1"])
+    code = video_split.main(
+        ["./in.mp4", "--mode", "fixed", "--output-dir", "./out", "--segment-s", "1"]
+    )
     assert code == 0
     assert assert_json_stdout(capsys) == {"ok": True}
 
@@ -176,7 +179,11 @@ def test_video_adaptive_compress_succeeds_in_fps_stage(
     out_file = tmp_path / "out.mp4"
 
     patch_prepared_input(lambda input_path, mode: str(in_file))
-    monkeypatch.setattr(video_adaptive_compress.probe, "probe_video", lambda p: dummy_probe_result(duration_s=10.0, video_fps=30.0, video_height=1080))
+    monkeypatch.setattr(
+        video_adaptive_compress.probe,
+        "probe_video",
+        lambda p: dummy_probe_result(duration_s=10.0, video_fps=30.0, video_height=1080),
+    )
 
     def _fake_encode_once(
         *,
@@ -223,8 +230,11 @@ def test_video_adaptive_compress_succeeds_in_fps_stage(
 def test_video_adaptive_compress_main_exit_code_0_on_success(capsys, monkeypatch, mock_ffmpeg_ok):
     from vision_ai_tools import video_adaptive_compress
 
-    monkeypatch.setattr(video_adaptive_compress, "adaptive_compress_video", lambda *a, **k: {"success": True})
-    code = video_adaptive_compress.main(["./in.mp4", "--output", "./out.mp4", "--target-bytes", "123"])
+    monkeypatch.setattr(
+        video_adaptive_compress, "adaptive_compress_video", lambda *a, **k: {"success": True}
+    )
+    code = video_adaptive_compress.main(
+        ["./in.mp4", "--output", "./out.mp4", "--target-bytes", "123"]
+    )
     assert code == 0
     assert assert_json_stdout(capsys)["success"] is True
-

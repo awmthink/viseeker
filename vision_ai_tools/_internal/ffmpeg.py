@@ -9,7 +9,6 @@ from __future__ import annotations
 import shutil
 import subprocess
 
-
 _INSTALL_HINT = (
     "Please install FFmpeg:\n"
     "  - macOS: brew install ffmpeg\n"
@@ -70,4 +69,3 @@ def verify_ffmpeg_tools(*, ffprobe_path: str, ffmpeg_path: str) -> None:
     """Verify both ffprobe and ffmpeg are available."""
     verify_ffprobe(ffprobe_path)
     verify_ffmpeg(ffmpeg_path)
-

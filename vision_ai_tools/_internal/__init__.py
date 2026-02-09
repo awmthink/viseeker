@@ -12,4 +12,3 @@ without copying code.
 #   from . import s3
 
 __all__ = ["ffmpeg", "inputs", "outputs", "probe", "s3"]
-
