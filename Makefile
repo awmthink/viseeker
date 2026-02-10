@@ -20,13 +20,13 @@ test:
 	$(UV) run pytest
 
 lint:
-	$(UV) run ruff check vision_ai_tools tests
+	$(UV) run ruff check viseeker tests
 
 fmt:
-	$(UV) run black vision_ai_tools tests
+	$(UV) run black viseeker tests
 
 fmt-check:
-	$(UV) run black --check vision_ai_tools tests
+	$(UV) run black --check viseeker tests
 
 check: lint fmt-check test
 

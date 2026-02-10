@@ -7,7 +7,7 @@ from tests.conftest import DummyCompletedProcess, assert_json_stdout
 def test_video_metadata_extract_video_metadata(
     monkeypatch, mock_ffmpeg_ok, patch_prepared_input, fake_subprocess_run
 ):
-    from vision_ai_tools import video_metadata
+    from viseeker import video_metadata
 
     patch_prepared_input(lambda input_path, mode: "spec://input")
 
@@ -40,7 +40,7 @@ def test_video_metadata_extract_video_metadata(
 
 
 def test_video_metadata_main_prints_json(capsys, monkeypatch, mock_ffmpeg_ok):
-    from vision_ai_tools import video_metadata
+    from viseeker import video_metadata
 
     monkeypatch.setattr(video_metadata, "extract_video_metadata", lambda *a, **k: {"ok": True})
     code = video_metadata.main(["./in.mp4"])
@@ -57,7 +57,7 @@ def test_video_convert_mp4_auto_codec_fallback(
     patch_prepared_input,
     patch_prepared_output,
 ):
-    from vision_ai_tools import video_convert_mp4
+    from viseeker import video_convert_mp4
 
     in_file = tmp_path / "in.mov"
     in_file.write_bytes(b"x")
@@ -97,7 +97,7 @@ def test_video_resize_keep_aspect_when_one_dimension(
     patch_prepared_input,
     patch_prepared_output,
 ):
-    from vision_ai_tools import video_resize
+    from viseeker import video_resize
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")
@@ -134,7 +134,7 @@ def test_video_remove_audio_counts_streams_removed(
     patch_prepared_input,
     patch_prepared_output,
 ):
-    from vision_ai_tools import video_remove_audio
+    from viseeker import video_remove_audio
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")

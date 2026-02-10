@@ -4,7 +4,7 @@ Image description via a generic multimodal VLM.
 
 This module provides:
 - a Python API: describe_image(...)
-- a CLI: python -m vision_ai_tools.image_describe ...
+- a CLI: python -m viseeker.image_describe ...
 
 Inputs can be:
 - local image file paths

@@ -12,7 +12,7 @@ def test_video_split_fixed_mode_produces_segments(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_split
+    from viseeker import video_split
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")
@@ -57,7 +57,7 @@ def test_video_split_s3_upload_prefix_sets_segment_urls(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_split
+    from viseeker import video_split
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")
@@ -97,7 +97,7 @@ def test_video_split_s3_upload_prefix_sets_segment_urls(
 
 
 def test_video_split_main_prints_json(capsys, monkeypatch, mock_ffmpeg_ok):
-    from vision_ai_tools import video_split
+    from viseeker import video_split
 
     monkeypatch.setattr(video_split, "split_video", lambda *a, **k: {"ok": True})
     code = video_split.main(
@@ -113,7 +113,7 @@ def test_video_keyframes_iframe_writes_images_and_manifest(
     mock_ffmpeg_ok,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_keyframes
+    from viseeker import video_keyframes
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")
@@ -157,7 +157,7 @@ def test_video_keyframes_iframe_writes_images_and_manifest(
 
 
 def test_video_keyframes_main_prints_json(capsys, monkeypatch, mock_ffmpeg_ok):
-    from vision_ai_tools import video_keyframes
+    from viseeker import video_keyframes
 
     monkeypatch.setattr(video_keyframes, "extract_video_keyframes", lambda *a, **k: [{"t": 1.0}])
     code = video_keyframes.main(["./in.mp4"])
@@ -172,7 +172,7 @@ def test_video_adaptive_compress_succeeds_in_fps_stage(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_adaptive_compress
+    from viseeker import video_adaptive_compress
 
     in_file = tmp_path / "in.mp4"
     in_file.write_bytes(b"x")
@@ -228,7 +228,7 @@ def test_video_adaptive_compress_succeeds_in_fps_stage(
 
 
 def test_video_adaptive_compress_main_exit_code_0_on_success(capsys, monkeypatch, mock_ffmpeg_ok):
-    from vision_ai_tools import video_adaptive_compress
+    from viseeker import video_adaptive_compress
 
     monkeypatch.setattr(
         video_adaptive_compress, "adaptive_compress_video", lambda *a, **k: {"success": True}

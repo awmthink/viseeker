@@ -24,7 +24,7 @@ def mock_ffmpeg_ok(monkeypatch: pytest.MonkeyPatch) -> None:
     """
     Make ffmpeg/ffprobe discovery + verification always succeed.
     """
-    from vision_ai_tools._internal import ffmpeg as ff
+    from viseeker._internal import ffmpeg as ff
 
     monkeypatch.setattr(ff, "find_ffmpeg", lambda: "ffmpeg")
     monkeypatch.setattr(ff, "find_ffprobe", lambda: "ffprobe")
@@ -36,9 +36,9 @@ def mock_ffmpeg_ok(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture()
 def dummy_probe_result() -> Callable[..., Any]:
     """
-    Factory for a vision_ai_tools._internal.probe.ProbeResult-like object.
+    Factory for a viseeker._internal.probe.ProbeResult-like object.
     """
-    from vision_ai_tools._internal.probe import ProbeResult
+    from viseeker._internal.probe import ProbeResult
 
     def _make(
         *,
@@ -68,14 +68,14 @@ def dummy_probe_result() -> Callable[..., Any]:
 @pytest.fixture()
 def patch_prepared_input(monkeypatch: pytest.MonkeyPatch):
     """
-    Patch vision_ai_tools._internal.inputs.PreparedInput to a deterministic context manager.
+    Patch viseeker._internal.inputs.PreparedInput to a deterministic context manager.
 
     Usage:
         patch_prepared_input(lambda input_path, mode: "/tmp/local.mp4")
     """
 
     def _apply(resolver: Callable[[str, str], str]) -> None:
-        from vision_ai_tools._internal import inputs
+        from viseeker._internal import inputs
 
         class _FakePreparedInput:
             def __init__(
@@ -99,11 +99,11 @@ def patch_prepared_input(monkeypatch: pytest.MonkeyPatch):
 @pytest.fixture()
 def patch_prepared_output(monkeypatch: pytest.MonkeyPatch):
     """
-    Patch vision_ai_tools._internal.outputs.PreparedOutput to a deterministic context manager.
+    Patch viseeker._internal.outputs.PreparedOutput to a deterministic context manager.
     """
 
     def _apply(local_path: str, *, s3_url: Optional[str] = None) -> None:
-        from vision_ai_tools._internal import outputs
+        from viseeker._internal import outputs
 
         @dataclass(frozen=True)
         class _Out:

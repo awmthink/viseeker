@@ -5,7 +5,7 @@ import pytest
 
 
 def test_inputs_is_http_s3_local(tmp_path):
-    from vision_ai_tools._internal import inputs
+    from viseeker._internal import inputs
 
     f = tmp_path / "a.txt"
     f.write_text("x", encoding="utf-8")
@@ -22,14 +22,14 @@ def test_inputs_is_http_s3_local(tmp_path):
 
 
 def test_inputs_prepared_input_url_mode_http_passthrough():
-    from vision_ai_tools._internal.inputs import PreparedInput
+    from viseeker._internal.inputs import PreparedInput
 
     with PreparedInput("https://example.com/a.mp4", mode="url") as spec:
         assert spec == "https://example.com/a.mp4"
 
 
 def test_inputs_prepared_input_url_mode_s3_presign(monkeypatch):
-    from vision_ai_tools._internal import inputs
+    from viseeker._internal import inputs
 
     monkeypatch.setattr(
         inputs.s3, "presign_get_object_url", lambda url, expires_in: "https://signed/url"
@@ -39,7 +39,7 @@ def test_inputs_prepared_input_url_mode_s3_presign(monkeypatch):
 
 
 def test_inputs_prepared_input_download_mode_http_download_and_cleanup(monkeypatch):
-    from vision_ai_tools._internal import inputs
+    from viseeker._internal import inputs
 
     class _Resp:
         def raise_for_status(self) -> None:
@@ -63,7 +63,7 @@ def test_inputs_prepared_input_download_mode_http_download_and_cleanup(monkeypat
 
 
 def test_inputs_prepared_input_download_mode_s3_download_and_cleanup(monkeypatch):
-    from vision_ai_tools._internal import inputs
+    from viseeker._internal import inputs
 
     def _download(url: str, dest_path: str) -> None:
         with open(dest_path, "wb") as f:
@@ -83,7 +83,7 @@ def test_inputs_prepared_input_download_mode_s3_download_and_cleanup(monkeypatch
 
 
 def test_outputs_prepared_output_local_creates_parent_dir(tmp_path):
-    from vision_ai_tools._internal.outputs import PreparedOutput
+    from viseeker._internal.outputs import PreparedOutput
 
     out_path = tmp_path / "nested" / "out.bin"
     assert not out_path.parent.exists()
@@ -94,7 +94,7 @@ def test_outputs_prepared_output_local_creates_parent_dir(tmp_path):
 
 
 def test_outputs_prepared_output_s3_upload_on_success(monkeypatch):
-    from vision_ai_tools._internal import outputs
+    from viseeker._internal import outputs
 
     calls: Dict[str, Any] = {}
 
@@ -122,7 +122,7 @@ def test_outputs_prepared_output_s3_upload_on_success(monkeypatch):
 
 
 def test_outputs_prepared_output_s3_no_upload_on_exception(monkeypatch):
-    from vision_ai_tools._internal import outputs
+    from viseeker._internal import outputs
 
     called = False
 
@@ -142,7 +142,7 @@ def test_outputs_prepared_output_s3_no_upload_on_exception(monkeypatch):
 
 
 def test_probe_parse_fps_and_probe_video(monkeypatch, mock_ffmpeg_ok):
-    from vision_ai_tools._internal import probe
+    from viseeker._internal import probe
 
     raw = {
         "format": {"duration": "1.5", "format_name": "mp4", "bit_rate": "123"},

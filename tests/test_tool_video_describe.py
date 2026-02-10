@@ -10,7 +10,7 @@ def test_video_describe_short_video_1fps_builds_messages_and_returns_text(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_describe
+    from viseeker import video_describe
 
     monkeypatch.setenv("VLM_MODEL_ID", "dummy-model")
 
@@ -81,7 +81,7 @@ def test_video_describe_long_video_uniform_samples_128_frames(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_describe
+    from viseeker import video_describe
 
     monkeypatch.setenv("VLM_MODEL_ID", "dummy-model")
 
@@ -126,7 +126,7 @@ def test_video_describe_rejects_videos_longer_than_5min(
     dummy_probe_result,
     patch_prepared_input,
 ):
-    from vision_ai_tools import video_describe
+    from viseeker import video_describe
 
     monkeypatch.setenv("VLM_MODEL_ID", "dummy-model")
 

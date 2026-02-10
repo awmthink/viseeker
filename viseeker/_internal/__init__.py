@@ -1,8 +1,8 @@
 """
-Internal shared utilities for vision_ai_tools.
+Internal shared utilities for viseeker.
 
 This package is intentionally **not** part of the public tool surface. It exists so multiple
-modules under `vision_ai_tools/` can reuse common behavior (S3, ffmpeg checks, input preparation)
+modules under `viseeker/` can reuse common behavior (S3, ffmpeg checks, input preparation)
 without copying code.
 """
 

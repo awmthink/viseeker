@@ -4,7 +4,7 @@ Video understanding via a generic multimodal VLM (multi-frame).
 
 This module provides:
 - a Python API: describe_video(...)
-- a CLI: python -m vision_ai_tools.video_describe ...
+- a CLI: python -m viseeker.video_describe ...
 
 Inputs can be:
 - local video file paths

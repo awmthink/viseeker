@@ -1,5 +1,5 @@
 [project]
-name = "vision-ai-tools"
+name = "viseeker"
 version = "0.1.0"
 description = "A collection of computer-vision tools for LLM Agents (image/video processing & understanding)"
 readme = "README.md"
@@ -26,15 +26,15 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/awmthink/vision-ai-tools"
-Source = "https://github.com/awmthink/vision-ai-tools"
+Homepage = "https://github.com/awmthink/viseeker"
+Source = "https://github.com/awmthink/viseeker"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["vision_ai_tools"]
+packages = ["viseeker"]
 
 [dependency-groups]
 dev = [

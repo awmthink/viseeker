@@ -1,6 +1,6 @@
 ## Purpose
 
-This repo (**vision-ai-tools**) is a set of computer-vision utilities (image/video processing &
+This repo (**viseeker**) is a set of computer-vision utilities (image/video processing &
 understanding) designed to be easy for AI coding agents to call.
 
 ## TL;DR (repo-root commands)
@@ -13,13 +13,13 @@ uv sync --dev
 uv run pytest
 
 # Run a tool (CLI)
-uv run python -m vision_ai_tools.video_metadata ./demo.mp4
+uv run python -m viseeker.video_metadata ./demo.mp4
 ```
 
 ## Repo layout
 
-- `vision_ai_tools/`: reusable Python utilities (each tool is both a module and a CLI)
-- `vision_ai_tools/_internal/`: shared internal helpers (S3, ffmpeg checks, input preparation)
+- `viseeker/`: reusable Python utilities (each tool is both a module and a CLI)
+- `viseeker/_internal/`: shared internal helpers (S3, ffmpeg checks, input preparation)
 
 ## Conventions for tools (must follow)
 
@@ -32,7 +32,7 @@ uv run python -m vision_ai_tools.video_metadata ./demo.mp4
   - Raise clear exceptions (usually `ValueError`) on invalid inputs or failed processing.
 
 - **CLI**
-  - Must run via `python -m vision_ai_tools.<tool_name> ...`
+  - Must run via `python -m viseeker.<tool_name> ...`
   - Provide `main(argv: Optional[list[str]] = None) -> int`
   - Print **result JSON to stdout**
   - Print errors to **stderr** and return a **non-zero** exit code
@@ -46,15 +46,15 @@ uv run python -m vision_ai_tools.video_metadata ./demo.mp4
   - When relevant, also support:
     - HTTP/HTTPS URLs
     - S3 URLs: `s3://bucket/key`
-  - Reuse `vision_ai_tools._internal.inputs.PreparedInput` instead of re-implementing downloads/presigning.
+  - Reuse `viseeker._internal.inputs.PreparedInput` instead of re-implementing downloads/presigning.
 
 - **Outputs**
   - Default to JSON outputs (stdout for CLI; return value for API).
   - If a tool produces artifacts (videos/images/manifests), support:
     - local output paths
     - S3 output URLs (`s3://...`)
-  - Prefer reusing shared helpers (e.g. `vision_ai_tools._internal.outputs.PreparedOutput`,
-    `vision_ai_tools._internal.s3.upload_path_to_s3`) rather than duplicating upload logic.
+  - Prefer reusing shared helpers (e.g. `viseeker._internal.outputs.PreparedOutput`,
+    `viseeker._internal.s3.upload_path_to_s3`) rather than duplicating upload logic.
 
 ### Documentation
 
@@ -93,11 +93,11 @@ uv run pytest path/to/test_file.py
 ### Run a tool during development
 
 ```bash
-uv run python -m vision_ai_tools.<tool_name> --help
-uv run python -m vision_ai_tools.<tool_name> <input_path> [OPTIONS]
+uv run python -m viseeker.<tool_name> --help
+uv run python -m viseeker.<tool_name> <input_path> [OPTIONS]
 ```
 
-（注：包目录已改为 `vision_ai_tools/`，对应 CLI 为 `python -m vision_ai_tools.<tool_name>`。）
+（注：包目录已改为 `viseeker/`，对应 CLI 为 `python -m viseeker.<tool_name>`。）
 
 ## Dependency & safety guidelines
 

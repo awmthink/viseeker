@@ -1,4 +1,4 @@
-# vision-ai-tools
+# viseeker
 
 A collection of computer vision utilities for image and video processing, designed to be easy for AI agents to use.
 
@@ -19,7 +19,7 @@ brew install ffmpeg
 ### Run a Tool
 
 ```bash
-uv run python -m vision_ai_tools.video_metadata ./demo.mp4
+uv run python -m viseeker.video_metadata ./demo.mp4
 ```
 
 ## Available Tools

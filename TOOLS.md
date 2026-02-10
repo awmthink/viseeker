@@ -11,11 +11,11 @@ Extract video metadata (duration, codec, resolution, framerate, etc.).
 ### SYNOPSIS
 
 ```bash
- python -m vision_ai_tools.video_metadata <input_path> [OPTIONS]
+ python -m viseeker.video_metadata <input_path> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_metadata import extract_video_metadata
+from viseeker.video_metadata import extract_video_metadata
 metadata = extract_video_metadata(input_path, **options)
 ```
 
@@ -56,10 +56,10 @@ JSON object with the following fields:
 
 ```bash
 # Local file
-python -m vision_ai_tools.video_metadata ./video.mp4
+python -m viseeker.video_metadata ./video.mp4
 
 # HTTP URL
-python -m vision_ai_tools.video_metadata "https://example.com/video.mp4"
+python -m viseeker.video_metadata "https://example.com/video.mp4"
 ```
 
 ### DEPENDENCIES
@@ -76,11 +76,11 @@ Extract keyframe images from videos, supporting multiple detection algorithms.
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_keyframes <input_path> [OPTIONS]
+python -m viseeker.video_keyframes <input_path> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_keyframes import extract_video_keyframes
+from viseeker.video_keyframes import extract_video_keyframes
 results = extract_video_keyframes(input_path, **options)
 ```
 
@@ -124,13 +124,13 @@ JSON array, each element is a keyframe:
 
 ```bash
 # Extract I-frames to local directory
-python -m vision_ai_tools.video_keyframes ./video.mp4 --output-dir ./frames
+python -m viseeker.video_keyframes ./video.mp4 --output-dir ./frames
 
 # Use difference method, max 10 frames
-python -m vision_ai_tools.video_keyframes ./video.mp4 --method difference --max-keyframes 10 --output-dir ./frames
+python -m viseeker.video_keyframes ./video.mp4 --method difference --max-keyframes 10 --output-dir ./frames
 
 # Multiple methods fallback (try I_frame first, then difference if failed)
-python -m vision_ai_tools.video_keyframes ./video.mp4 --method "I_frame,difference" --output-dir ./frames
+python -m viseeker.video_keyframes ./video.mp4 --method "I_frame,difference" --output-dir ./frames
 ```
 
 ### DEPENDENCIES
@@ -148,11 +148,11 @@ Resize video to specified `width/height`, supporting multiple aspect ratio strat
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_resize <input_path> --output <output> [OPTIONS]
+python -m viseeker.video_resize <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_resize import resize_video
+from viseeker.video_resize import resize_video
 result = resize_video(input_path, output="out.mp4", width=1280, height=720)
 ```
 
@@ -201,10 +201,10 @@ JSON object (example fields):
 
 ```bash
 # Strict output 1280x720 (allow stretching)
-python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --width 1280 --height 720 --aspect-policy stretch
+python -m viseeker.video_resize ./in.mp4 --output ./out.mp4 --width 1280 --height 720 --aspect-policy stretch
 
 # Only specify height: proportional scaling
-python -m vision_ai_tools.video_resize ./in.mp4 --output ./out.mp4 --height 720
+python -m viseeker.video_resize ./in.mp4 --output ./out.mp4 --height 720
 ```
 
 ### DEPENDENCIES
@@ -222,11 +222,11 @@ Remove audio track from video (no re-encoding, preserves original video codec an
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_remove_audio <input_path> --output <output> [OPTIONS]
+python -m viseeker.video_remove_audio <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_remove_audio import remove_video_audio
+from viseeker.video_remove_audio import remove_video_audio
 result = remove_video_audio(input_path, output="noaudio.mp4")
 ```
 
@@ -262,11 +262,11 @@ Convert various video formats to MP4. Defaults to H.265 (`libx265`) and automati
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_convert_mp4 <input_path> --output <output> [OPTIONS]
+python -m viseeker.video_convert_mp4 <input_path> --output <output> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_convert_mp4 import convert_to_mp4
+from viseeker.video_convert_mp4 import convert_to_mp4
 result = convert_to_mp4(input_path, output="out.mp4", video_codec="auto", max_height=1080)
 ```
 
@@ -301,11 +301,11 @@ Adaptively compress video to target file size (strategy order: fps → resolutio
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_adaptive_compress <input_path> --output <output> (--target-bytes N | --target-mb M) [OPTIONS]
+python -m viseeker.video_adaptive_compress <input_path> --output <output> (--target-bytes N | --target-mb M) [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_adaptive_compress import adaptive_compress_video
+from viseeker.video_adaptive_compress import adaptive_compress_video
 result = adaptive_compress_video(input_path, output="out.mp4", target_mb=8)
 ```
 
@@ -342,11 +342,11 @@ Split video into multiple segments: supports I-frame based splitting (`iframe`) 
 ### SYNOPSIS
 
 ```bash
-python -m vision_ai_tools.video_split <input_path> --mode (iframe|fixed) [OPTIONS]
+python -m viseeker.video_split <input_path> --mode (iframe|fixed) [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_split import split_video
+from viseeker.video_split import split_video
 result = split_video(input_path, mode="fixed", output_dir="./segs", segment_s=10)
 ```
 
@@ -384,11 +384,11 @@ Describe an image using a generic multimodal VLM via an OpenAI-compatible client
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.image_describe <input_path> [OPTIONS]
+uv run python -m viseeker.image_describe <input_path> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.image_describe import describe_image
+from viseeker.image_describe import describe_image
 result = describe_image(input_path, prompt="Describe this image in detail.")
 ```
 
@@ -412,10 +412,10 @@ The tool returns a single string value (JSON string) containing the natural lang
 
 ```bash
 # Basic usage with built-in prompt
-uv run python -m vision_ai_tools.image_describe ./image.png
+uv run python -m viseeker.image_describe ./image.png
 
 # With custom Chinese prompt
-uv run python -m vision_ai_tools.image_describe ./image.png \
+uv run python -m viseeker.image_describe ./image.png \
   --prompt "请用中文详细描述图片中的场景、人物和文字内容"
 ```
 
@@ -439,11 +439,11 @@ Understand a video by sampling frames and calling a multimodal VLM (multi-frame)
 ### SYNOPSIS
 
 ```bash
-uv run python -m vision_ai_tools.video_describe <input_path> [OPTIONS]
+uv run python -m viseeker.video_describe <input_path> [OPTIONS]
 ```
 
 ```python
-from vision_ai_tools.video_describe import describe_video
+from viseeker.video_describe import describe_video
 result = describe_video(input_path, prompt="你觉得这个恐怖吗？", detail="low")
 ```
 
@@ -479,12 +479,12 @@ JSON object:
 
 ```bash
 # Basic usage (1 fps, max 128 frames), note: duration must be < 300s
-uv run python -m vision_ai_tools.video_describe ./video.mp4 \
+uv run python -m viseeker.video_describe ./video.mp4 \
   --prompt "你觉得这个恐怖吗？" \
   --detail low
 
 # Use high detail
-uv run python -m vision_ai_tools.video_describe "s3://bucket/video.mp4" \
+uv run python -m viseeker.video_describe "s3://bucket/video.mp4" \
   --prompt "总结这个视频发生了什么" \
   --detail high
 ```
